@@ -1,6 +1,6 @@
 # category-management-front_angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.10.
+Projet généré avec  [Angular CLI](https://github.com/angular/angular-cli) version 17.3.10.
 
 ## Lancement (Execution du projet ) par docker
 
