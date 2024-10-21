@@ -1,10 +1,11 @@
 # category-management-front_angular
 
+
 Projet généré avec  [Angular CLI](https://github.com/angular/angular-cli) version 17.3.10.
 
-## Lancement (Execution du projet ) par docker
+## Lauch the project (Execution du projet ) using docker
 
-Pour lancer le projet, taper la commande suivante:
+use the following command:
 ``` 
 docker-compose up
 ```
