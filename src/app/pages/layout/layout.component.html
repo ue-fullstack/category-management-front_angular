@@ -1,0 +1,24 @@
+<div class="">
+    <header class="d-flex text-bg-light flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+      <div class="col-md-3 mb-2 mb-md-0">
+        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+          <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+      </div>
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a routerLink="/" class="nav-link px-2 link-secondary">Acceuil</a></li>
+        <li><a routerLink="/category" class="nav-link px-2">Categories</a></li>
+        <li><a routerLink="/apropos" class="nav-link px-2">apropos</a></li>
+        <li><a routerLink="/faq" class="nav-link px-2">FAQ</a></li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <button type="button" class="btn btn-primary" (click)="onLogout()">Logout</button>
+      </div>
+    </header>
+  </div>
+
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
