@@ -1,9 +1,4 @@
 import { Routes } from '@angular/router';
-import { LayoutComponent } from './pages/layout/layout.component';
-import { CategoryComponent } from './pages/category/category.component';
-import { AccueilComponent } from './pages/accueil/accueil.component';
-import { AproposComponent } from './apropos/apropos.component';
-import { FaqComponent } from './faq/faq.component';
 import {HomepageComponent} from "./features/home/homepage/homepage.component";
 import {CategoryDetailComponent} from "./features/category/category-detail/category-detail.component";
 import {CategoryListComponent} from "./features/category/category-list/category-list.component";
