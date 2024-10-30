@@ -5,6 +5,7 @@ import {CategoryListComponent} from "./features/category/category-list/category-
 import {CreateCategoryComponent} from "./features/category/create-category/create-category.component";
 import {AboutComponent} from "./features/about/about/about.component";
 import {ContactComponent} from "./features/contact/contact/contact.component";
+import {error404Component} from "./features/error/404/404.component";
 
 export const routes: Routes = [
     {
@@ -43,6 +44,10 @@ export const routes: Routes = [
             {
                 path:'contact',
                 component:ContactComponent
+            },
+            {
+              path:'404',
+              component:error404Component
             }
         ]
     }
