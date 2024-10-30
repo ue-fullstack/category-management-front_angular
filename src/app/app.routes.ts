@@ -5,6 +5,9 @@ import { AccueilComponent } from './pages/accueil/accueil.component';
 import { AproposComponent } from './apropos/apropos.component';
 import { FaqComponent } from './faq/faq.component';
 import {HomepageComponent} from "./features/home/homepage/homepage.component";
+import {CategoryDetailComponent} from "./features/category/category-detail/category-detail.component";
+import {CategoryListComponent} from "./features/category/category-list/category-list.component";
+import {CreateCategoryComponent} from "./features/category/create-category/create-category.component";
 
 export const routes: Routes = [
     {
@@ -18,18 +21,26 @@ export const routes: Routes = [
     },
     {
         path:'',
-        component:LayoutComponent, //ceci pemettra d'afficher le navbar (menu)
+        // component:LayoutComponent, //ceci pemettra d'afficher le navbar (menu)
         children: [
             {
-                path:'acceuil',
+                path:'home',
                 component:HomepageComponent
             },
             {
-                path:'category',
-                component:CategoryComponent
+                path:'categorydetail',
+                component:CategoryDetailComponent
             },
             {
-                path:'apropos',
+              path:'categorylist',
+              component:CategoryListComponent
+            },
+            {
+              path:'createcategory',
+              component:CreateCategoryComponent
+            },
+            {
+                path:'about',
                 component:AproposComponent
             },
             {
