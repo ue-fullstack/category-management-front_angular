@@ -4,6 +4,7 @@ import { CategoryComponent } from './pages/category/category.component';
 import { AccueilComponent } from './pages/accueil/accueil.component';
 import { AproposComponent } from './apropos/apropos.component';
 import { FaqComponent } from './faq/faq.component';
+import {HomepageComponent} from "./features/home/homepage/homepage.component";
 
 export const routes: Routes = [
     {
@@ -13,7 +14,7 @@ export const routes: Routes = [
     },
     {
         path:'',
-        component:LayoutComponent
+        component:HomepageComponent
     },
     {
         path:'',
@@ -21,7 +22,7 @@ export const routes: Routes = [
         children: [
             {
                 path:'acceuil',
-                component:AccueilComponent
+                component:HomepageComponent
             },
             {
                 path:'category',
