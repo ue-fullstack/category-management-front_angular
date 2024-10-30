@@ -8,6 +8,8 @@ import {HomepageComponent} from "./features/home/homepage/homepage.component";
 import {CategoryDetailComponent} from "./features/category/category-detail/category-detail.component";
 import {CategoryListComponent} from "./features/category/category-list/category-list.component";
 import {CreateCategoryComponent} from "./features/category/create-category/create-category.component";
+import {AboutComponent} from "./features/about/about/about.component";
+import {ContactComponent} from "./features/contact/contact/contact.component";
 
 export const routes: Routes = [
     {
@@ -41,11 +43,11 @@ export const routes: Routes = [
             },
             {
                 path:'about',
-                component:AproposComponent
+                component:AboutComponent
             },
             {
-                path:'faq',
-                component:FaqComponent
+                path:'contact',
+                component:ContactComponent
             }
         ]
     }
