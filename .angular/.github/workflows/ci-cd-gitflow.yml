@@ -1,0 +1,51 @@
+name: CI/CD Gitflow
+
+on:
+  pull_request:
+    branches:
+      - develop
+  push:
+    branches:
+      - develop
+      - 'feature/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test -- --watch=false --no-progress
+
+  merge-feature-to-develop:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+      - name: Merge feature into develop
+        run: |
+          git checkout develop
+          git merge --no-ff ${{ github.head_ref }}
+          git push origin develop
