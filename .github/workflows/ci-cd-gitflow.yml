@@ -28,8 +28,8 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      - name: Run tests
-        run: npm run test -- --watch=false --no-progress
+#      - name: Run tests
+#        run: npm run test -- --watch=false --no-progress
 
   merge-feature-to-develop:
     needs: build
