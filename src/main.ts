@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
@@ -6,12 +7,12 @@ import { AppComponent } from './app/app.component';
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
 
-declare var jQuery: any;
+declare let jQuery: any;
 (function ($) {
   "use strict";
 
   // Spinner
-  var spinner = function () {
+  const spinner = function () {
     setTimeout(function () {
       if ($('#spinner').length > 0) {
         $('#spinner').removeClass('show');
@@ -34,8 +35,6 @@ declare var jQuery: any;
     }
   });
 
-
-
   // Back to top button
   $(window).scroll(() => {
     if ($(window).scrollTop() > 300) {
@@ -50,7 +49,6 @@ declare var jQuery: any;
     return false;
   });
 
-
   // Header carousel
   $(".header-carousel").owlCarousel({
     autoplay: true,
@@ -64,7 +62,6 @@ declare var jQuery: any;
       '<i class="bi bi-chevron-right"></i>'
     ]
   });
-
 
   // Testimonials carousel
   $(".testimonial-carousel").owlCarousel({

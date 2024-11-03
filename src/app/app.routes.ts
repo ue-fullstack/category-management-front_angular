@@ -18,7 +18,6 @@ export const routes: Routes = [
     },
     {
         path:'',
-        // component:LayoutComponent, //ceci pemettra d'afficher le navbar (menu)
         children: [
             {
                 path:'home',
