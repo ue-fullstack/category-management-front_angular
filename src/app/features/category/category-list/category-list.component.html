@@ -3,48 +3,16 @@
   <div class="container">
     <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Catégories</h1>
     <div class="row g-4">
-      <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-        <a class="cat-item rounded p-4" href="">
+      @for (item of categoryList; track $index) {
+        <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+        <a class="cat-item rounded p-4" (click)="viewDetails(item.id)">
           <i class="fa fa-3x fa-apple-alt text-secondary mb-4"></i>
-          <h6 class="mb-3">Fruits & Légumes</h6>
-          <p class="mb-0">120 Catégories Enfants</p>
+          <h6 class="mb-3">{{item.name}}</h6>
+          <p class="mb-0">{{item.children.length}} Catégories Enfants</p>
         </a>
       </div>
-      <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-        <a class="cat-item rounded p-4" href="">
-          <i class="fa fa-3x fa-drumstick-bite text-secondary mb-4"></i>
-          <h6 class="mb-3">Viandes</h6>
-          <p class="mb-0">80 Catégories Enfants</p>
-        </a>
-      </div>
-      <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-        <a class="cat-item rounded p-4" href="">
-          <i class="fa fa-3x fa-fish text-secondary mb-4"></i>
-          <h6 class="mb-3">Poissons & Fruits de Mer</h6>
-          <p class="mb-0">60 Catégories Enfants</p>
-        </a>
-      </div>
-      <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-        <a class="cat-item rounded p-4" href="">
-          <i class="fa fa-3x fa-bread-slice text-secondary mb-4"></i>
-          <h6 class="mb-3">Boulangerie</h6>
-          <p class="mb-0">50 Catégories Enfants</p>
-        </a>
-      </div>
-      <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-        <a class="cat-item rounded p-4" href="">
-          <i class="fa fa-3x fa-carrot text-secondary mb-4"></i>
-          <h6 class="mb-3">Épicerie</h6>
-          <p class="mb-0">200 Catégories Enfants</p>
-        </a>
-      </div>
-      <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-        <a class="cat-item rounded p-4" href="">
-          <i class="fa fa-3x fa-wine-bottle text-secondary mb-4"></i>
-          <h6 class="mb-3">Boissons</h6>
-          <p class="mb-0">75 Catégories Enfants</p>
-        </a>
-      </div>
+      }
+      
     </div>
   </div>
 </div>
@@ -79,7 +47,7 @@
           <div class="category-item p-4 mb-4">
             <div class="row g-4">
               <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                <img class="flex-shrink-0 img-fluid border rounded" src="img/category-1.jpg" alt="Category Image" style="width: 80px; height: 80px;">
+                <img class="flex-shrink-0 img-fluid border rounded" src="assets/img/category-1.png" alt="Category Image" style="width: 80px; height: 80px;">
                 <div class="text-start ps-4">
                   <h5 class="mb-3">Electronics</h5>
                   <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>50 Products</span>
@@ -97,7 +65,7 @@
           <div class="category-item p-4 mb-4">
             <div class="row g-4">
               <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                <img class="flex-shrink-0 img-fluid border rounded" src="img/category-2.jpg" alt="Category Image" style="width: 80px; height: 80px;">
+                <img class="flex-shrink-0 img-fluid border rounded" src="assets/img/category-2.png" alt="Category Image" style="width: 80px; height: 80px;">
                 <div class="text-start ps-4">
                   <h5 class="mb-3">Home Appliances</h5>
                   <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>30 Products</span>
@@ -115,7 +83,7 @@
           <div class="category-item p-4 mb-4">
             <div class="row g-4">
               <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                <img class="flex-shrink-0 img-fluid border rounded" src="img/category-3.jpg" alt="Category Image" style="width: 80px; height: 80px;">
+                <img class="flex-shrink-0 img-fluid border rounded" src="assets/img/category-3.png" alt="Category Image" style="width: 80px; height: 80px;">
                 <div class="text-start ps-4">
                   <h5 class="mb-3">Fashion</h5>
                   <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>120 Products</span>

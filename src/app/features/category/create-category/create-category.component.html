@@ -1,29 +1,35 @@
-<div class="container col-lg-6">
+<br><br>
+<div class="container col-lg-6 pt-4">
   <h4 class="mb-4">Nouvelle catégorie</h4>
-  <form>
+  <form [formGroup]="categoryForm">
     <div class="row g-3">
-      <div class="col-12 col-sm-6">
-        <input type="text" class="form-control" placeholder="Nom de la catégorie" required>
-      </div>
+      <div class="col-12 col-sm-12">
+        <input type="text" class="form-control" formControlName="name" placeholder="Nom de la catégorie" required>
+      </div> 
+      <!--
       <div class="col-12 col-sm-6">
         <input type="text" class="form-control" placeholder="Code de la catégorie" required>
       </div>
+     
       <div class="col-12 col-sm-6">
-        <select class="form-control" required>
+        <select class="form-control" formControlName="type" required>
           <option selected disabled>Choisir le type de catégorie</option>
           <option value="type1">Type 1</option>
           <option value="type2">Type 2</option>
           <option value="type3">Type 3</option>
         </select>
       </div>
+
       <div class="col-12 col-sm-6">
-        <input type="file" class="form-control bg-white" required>
+        <input type="file" formControlName="image" class="form-control bg-white" required>
       </div>
+      
       <div class="col-12">
-        <textarea class="form-control" rows="5" placeholder="Description de la catégorie"></textarea>
+        <textarea class="form-control" formControlName="description" rows="5" placeholder="Description de la catégorie"></textarea>
       </div>
+      -->
       <div class="col-12">
-        <button class="btn btn-primary w-100" type="submit">Créer la catégorie</button>
+        <button class="btn btn-primary w-100" type="button" (click)="onCreateCategory()">Créer la catégorie</button>
       </div>
     </div>
   </form>

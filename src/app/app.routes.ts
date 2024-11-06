@@ -25,7 +25,7 @@ export const routes: Routes = [
                 component:HomepageComponent
             },
             {
-                path:'categorydetail',
+                path:'categorydetail/:id',
                 component:CategoryDetailComponent
             },
             {
