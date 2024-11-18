@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { CategoryService } from '../../category.service';
+import { CategoryService } from '../../../services/category.service';
 import { Category } from '../../../shared/Category';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-category-detail',
@@ -17,7 +18,8 @@ export class CategoryDetailComponent {
 
   activateRoute = inject(ActivatedRoute);
 
-  constructor() {
+  constructor(private alertService: AlertService) {
+    
     this.activateRoute.params.subscribe((params: any) => {
       const id = +params['id'];
       if (id) {
@@ -34,7 +36,7 @@ export class CategoryDetailComponent {
         console.log('Nombre d\'enfants:', this.category.children.length);
       }
     }, error => {
-      alert("Erreur lors de la récupération des données de la catégorie.");
+      this.alertService.showAlert("Erreur lors de la récupération des données de la catégorie.");
     });
   }
 }

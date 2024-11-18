@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Category, Page } from '../../../shared/Category';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { CategoryService } from '../../category.service';
+import { CategoryService } from '../../../services/category.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-management',
@@ -19,8 +20,8 @@ export class ManagementComponent implements OnInit{
 
   categoryList: Category[] = [];
   route = inject(Router);
-
-  constructor(){
+  
+  constructor(private alertService: AlertService){
     this.getAllCategories();
   }
 
@@ -34,9 +35,9 @@ export class ManagementComponent implements OnInit{
 
   getAllCategories(){
     this.categoryService.getAllCategories().subscribe((res: Page<Category>)=>{
-      this.categoryList = res.content;
+      this.categoryList = res._embedded.categoryList;
      }, error=>{
-       alert("API error");
+       this.alertService.showAlert("API error");
      })
   }
 
@@ -44,10 +45,10 @@ export class ManagementComponent implements OnInit{
     const isDelete = confirm('Êtes-vous sûr de voiloir supprimer cette catégorie ?');
     if(isDelete){
       this.categoryService.deleteCategoryById(id).subscribe((res: Category)=>{
-        alert("Category Deleted with success");
+        this.alertService.showAlert("Category Deleted with success");
         this.getAllCategories();
        }, error=>{
-        alert("API error");
+        this.alertService.showAlert("API error");
        })
     }
   }

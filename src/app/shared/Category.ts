@@ -13,15 +13,19 @@ export interface Category {
 
 // Ajoutez une interface pour le type de Page
 export interface Page<T> {
-    content: T[];
-    pageable: any;
-    totalPages: number;
-    totalElements: number;
-    last: boolean;
+  _embedded: {
+    categoryList: T[];
+  };
+  _links: {
+    self: {
+      href: string;
+    };
+  };
+  page: {
     size: number;
+    totalElements: number;
+    totalPages: number;
     number: number;
-    sort: any;
-    numberOfElements: number;
-    first: boolean;
-    empty: boolean;
-  }
+  };
+}
+

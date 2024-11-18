@@ -31,20 +31,33 @@
               </label>
             </div>
           </div>
-    
+  
           <div class="col-12" *ngIf="isParentMode">
             <select class="form-control" formControlName="parentId">
               <option value="">Sélectionner une catégorie parente (optionnel)</option>
-              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+              <option *ngFor="let category of allCategories" [value]="category.id">{{ category.name }}</option>
             </select>
           </div>
+  
           <div class="col-12" *ngIf="!isParentMode">
-            <select multiple class="form-control" formControlName="children">
-              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-            </select>
-            <small class="form-text text-muted">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs enfants</small>
+            <h5>Enfants sélectionnés:</h5>
+            <div *ngFor="let child of selectedChildren" class="form-check">
+              <input class="form-check-input" type="checkbox" [id]="'child' + child.id" [checked]="true" (change)="toggleChildSelection(child)">
+              <label class="form-check-label" [for]="'child' + child.id">
+                {{ child.name }}
+              </label>
+            </div>
+  
+            <h5>Enfants disponibles:</h5>
+            <div *ngFor="let child of availableChildren" class="form-check">
+              <input class="form-check-input" type="checkbox" [id]="'availableChild' + child.id" [checked]="false" (change)="toggleChildSelection(child)">
+              <label class="form-check-label" [for]="'availableChild' + child.id">
+                {{ child.name }}
+              </label>
+            </div>
           </div>
           <div class="col-12">
+            <small class="form-text text-muted">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs enfants</small>
             <button class="btn btn-primary w-100" type="submit" [disabled]="categoryForm.invalid">
               {{ isEditing ? 'Modifier' : 'Créer' }} la catégorie
             </button>
