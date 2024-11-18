@@ -36,7 +36,7 @@ export class CategoryDetailComponent {
         console.log('Nombre d\'enfants:', this.category.children.length);
       }
     }, error => {
-      this.alertService.showAlert("Erreur lors de la récupération des données de la catégorie.");
+      this.alertService.showError(error);
     });
   }
 }

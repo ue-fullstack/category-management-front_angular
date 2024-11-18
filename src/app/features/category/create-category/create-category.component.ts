@@ -134,7 +134,7 @@ export class CreateCategoryComponent implements OnInit {
         console.log('Nombre d\'enfants:', this.aCategory.children.length);
       }
     }, error => {
-      this.alertService.showAlert("Erreur lors de la récupération des données de la catégorie.");
+      this.alertService.showError(error)
     });
   }
 
@@ -168,7 +168,7 @@ export class CreateCategoryComponent implements OnInit {
               console.log('Catégorie mise à jour avec succès', response);
               this.alertService.showAlert('Categorie mise à jour avec succès');
             },
-            error => console.error('Erreur lors de la mise à jour de la catégorie', error)
+            error => this.alertService.showError(error)
           );
         }
       } else {
@@ -177,7 +177,7 @@ export class CreateCategoryComponent implements OnInit {
             console.log('Catégorie créée avec succès', response);
             this.alertService.showAlert("Catégorie crée avec succès");
           },
-          error => console.error('Erreur lors de la création de la catégorie', error)
+          error => this.alertService.showError(error)
         );
       }
     }

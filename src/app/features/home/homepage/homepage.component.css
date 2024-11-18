@@ -1,0 +1,14 @@
+.carousel-item {
+    height: 400px;
+}
+.carousel-img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    filter: blur(2px);
+}
+
+.carousel-caption {
+    background: rgba(18, 25, 28, 0.7); 
+    border-radius: 8px;
+  }

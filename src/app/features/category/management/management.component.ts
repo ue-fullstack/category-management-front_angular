@@ -37,7 +37,7 @@ export class ManagementComponent implements OnInit{
     this.categoryService.getAllCategories().subscribe((res: Page<Category>)=>{
       this.categoryList = res._embedded.categoryList;
      }, error=>{
-       this.alertService.showAlert("API error");
+      this.alertService.showError(error);
      })
   }
 
@@ -48,7 +48,7 @@ export class ManagementComponent implements OnInit{
         this.alertService.showAlert("Category Deleted with success");
         this.getAllCategories();
        }, error=>{
-        this.alertService.showAlert("API error");
+        this.alertService.showError(error);
        })
     }
   }
