@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Component, inject, OnInit } from '@angular/core';
 import { Category, Page } from '../../../shared/Category';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';

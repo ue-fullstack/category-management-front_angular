@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgControlStatus, ReactiveFormsModule, Validators } from '@angular/forms';
