@@ -8,7 +8,7 @@ import { AlertService } from '../../../services/alert.service';
 @Component({
   selector: 'app-category-detail',
   standalone: true,
-  imports: [DatePipe, CommonModule, NgOptimizedImage],
+  imports: [DatePipe, CommonModule],
   templateUrl: './category-detail.component.html',
   styleUrl: './category-detail.component.css'
 })
