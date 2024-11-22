@@ -18,7 +18,6 @@
                 category?.code
               }}</span
             >
-            <!-- <span class="text-truncate me-3"><i class="fa fa-cube text-primary me-2"></i>Type: Alimentaire</span> -->
           </div>
         </div>
 
@@ -39,12 +38,6 @@
             }
           </ul>
 
-          <h4 class="mb-3">Conditions d'utilisation</h4>
-          <p>
-            Conditions d'utilisation spécifiques de la catégorie, telles que les
-            règles et directives à suivre pour les produits inclus dans cette
-            catégorie.
-          </p>
         </div>
       </div>
 
@@ -53,27 +46,23 @@
           class="bg-light rounded p-5 mb-4 wow slideInUp"
           data-wow-delay="0.1s"
         >
-          <h4 class="mb-4">Résumé de la Catégorie</h4>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Ajoutée le :
-            {{ category?.createdAt | date : "dd-MMM-yyyy" }}
-          </p>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Code :
-            {{ category?.code }}
-          </p>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Type :
-            Alimentaire
-          </p>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Nombre de
-            produits : 200
-          </p>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Statut : Active
-          </p>
-        </div>
+        <h4 class="mb-4">Résumé de la Catégorie</h4>
+        <p>
+          <i class="fa fa-angle-right text-primary me-2"></i>Ajoutée le :
+          {{ category?.createdAt | date : "dd-MMM-yyyy" }}
+        </p>
+        <p>
+          <i class="fa fa-angle-right text-primary me-2"></i>Code :
+          {{ category?.code }}
+        </p>
+        <p>
+          <i class="fa fa-angle-right text-primary me-2"></i>Catégorie Racine :
+          {{ category?.root ? "Oui": "Non"}}
+        </p>
+        <p *ngIf="category?.parentId!==null">
+          <i class="fa fa-angle-right text-primary me-2"></i>Parent
+        </p>
+      </div>
         <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
           <h4 class="mb-4">Informations Supplémentaires</h4>
           <p class="m-0">

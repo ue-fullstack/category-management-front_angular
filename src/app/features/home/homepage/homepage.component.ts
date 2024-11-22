@@ -55,9 +55,10 @@ export class HomepageComponent implements OnInit{
   }
 
   ngOnInit(): void {
-      this.getAllCategories();
-      this.loadCategories();
+    this.getAllCategories();
+    this.loadCategories();
   }
+  
 
   loadCategories() {
     const searchParams = {
@@ -73,7 +74,7 @@ export class HomepageComponent implements OnInit{
         this.categories = page._embedded.categoryList;
         this.totalElements = page.page.totalElements;
       },
-      error => console.error('Error searching categories', error)
+      //error => console.error('Error searching categories', error)
     );
   }
 

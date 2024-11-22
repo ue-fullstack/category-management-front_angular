@@ -51,17 +51,18 @@ export class ManagementComponent implements OnInit {
   onDelete(id: number) {
     const isDelete = confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');
     if (isDelete) {
-      this.categoryService.deleteCategoryById(id).subscribe(
-        (res: Category) => {
+      this.categoryService.deleteCategoryById(id).subscribe({
+        next: () => {
           this.alertService.showAlert('Catégorie supprimée avec succès');
           this.getAllCategories();
         },
-        error => {
+        error: (error) => {
           this.alertService.showError(error);
         }
-      );
+      });
     }
   }
+  
 
   getCategoryNameById(id: number): string | null {
     const parentCategory = this.categoryList.find(category => category.id === id);

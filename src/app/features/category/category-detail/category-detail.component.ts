@@ -31,14 +31,17 @@ export class CategoryDetailComponent {
   }
 
   getCategoryById(id: number) {
-    this.categoryService.getCategoryById(id).subscribe((res: Category) => {
-      this.category = res;
-      // Assurez-vous que les enfants sont correctement chargés
-      if (this.category.children) {
-        console.log('Nombre d\'enfants:', this.category.children.length);
+    this.categoryService.getCategoryById(id).subscribe({
+      next: (category: Category) => {
+        this.category = category;
+        if (this.category.children) {
+          console.log('Nombre d\'enfants:', this.category.children.length);
+        }
+      },
+      error: (error) => {
+        this.alertService.showError(error);
       }
-    }, error => {
-      this.alertService.showError(error);
     });
   }
+  
 }
