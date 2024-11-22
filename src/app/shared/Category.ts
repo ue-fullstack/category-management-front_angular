@@ -4,6 +4,7 @@ export interface Category {
     code: string;
     description: string;
     image: File;
+    imageUrl: string; //
     children: Category[];
     createdAt: string;
     root: boolean;

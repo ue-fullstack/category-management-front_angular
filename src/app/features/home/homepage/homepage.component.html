@@ -85,16 +85,17 @@
   <div class="container">
     <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Catégories</h1>
     <div class="row g-4">
-      @for (item of categoryList; track $index) {
-        <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-        <a class="cat-item rounded p-4" (click)="viewDetails(item.id)">
-          <i class="fa fa-3x fa-apple-alt text-secondary mb-4"></i>
-          <h6 class="mb-3">{{item.name}}</h6>
-          <p class="mb-0">{{item.children.length}} Catégories Enfants</p>
-        </a>
-      </div>
-      }
-      
+      <ng-container *ngFor="let item of categoryList; trackBy: trackByFn">
+        <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
+          <a class="cat-item rounded p-4" (click)="viewDetails(item.id)">
+            <div class="image-container">
+              <img class="img-fluid mb-4" [src]="item.imageUrl || 'default-image-url.jpg'" alt="{{ item.name }} Image">
+            </div>
+            <h6 class="mb-3">{{ item.name }}</h6>
+            <p class="mb-0">{{ item.children.length }} Catégories Enfants</p>
+          </a>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

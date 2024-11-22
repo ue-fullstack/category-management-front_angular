@@ -1,53 +1,62 @@
-<div class="container">
-    <h3>Category Management</h3>
-  
-    <!-- Tableau des catégories -->
-    <div class="category-table" *ngIf="categoryList && categoryList.length > 0; else noCategories">
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Photo</th>
-            <th>Nom de la Catégorie</th>
-            <th>Parent</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Affichage des catégories racine et leurs sous-catégories de manière récursive -->
-          <ng-container *ngFor="let category of categoryList">
-            <ng-container *ngTemplateOutlet="recursiveCategoryTemplate; context: { $implicit: category, level: 0 }"></ng-container>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
-  
-    <!-- Message si aucune catégorie n'est disponible -->
-    <ng-template #noCategories>
-      <p>Aucune catégorie trouvée...</p>
-    </ng-template>
-  
-    <!-- Template récursif pour afficher les catégories et leurs sous-catégories -->
-    <ng-template #recursiveCategoryTemplate let-category let-level="level">
-      <tr>
-        <td>{{ category.id }}</td>
-        <td>
-          <img [src]="category.imageUrl || ''" alt="Category Image" width="50" height="50">
-        </td>
-        <td [style.paddingLeft.px]="level * 20">{{ category.name }}</td>
-        <td *ngIf="category.parentId">{{ getCategoryNameById(category.parentId) }}</td>
-        <td *ngIf="!category.parentId">Aucun (Catégorie racine)</td>
-        <td>
-          <button type="button" class="btn btn-warning mt-3" (click)="onUpdate(category.id)">Modifier</button>
-          <button type="button" class="btn btn-primary mt-3 ms-2" (click)="onDelete(category.id)">Supprimer</button>
-        </td>
-      </tr>
-  
-      <!-- Affichage récursif des sous-catégories s'il y en a -->
-      <ng-container *ngFor="let child of category.children">
-        <ng-container *ngTemplateOutlet="recursiveCategoryTemplate; context: { $implicit: child, level: level + 1 }"></ng-container>
-      </ng-container>
-    </ng-template>
+<div class="container mt-3">
+  <h3>Category Management</h3>
+
+  <!-- Liste déroulante pour le tri -->
+  <div class="mb-3">
+    <label for="sortSelect">Trier par :</label>
+    <select id="sortSelect" class="form-select" (change)="filterCategories($event)">
+      <option value="">Sélectionnez un critère</option>
+      <option value="parent">Parent</option>
+      <option value="children">Enfant</option>
+      <option value="root">Racine</option>
+    </select>
   </div>
 
-  
+  <!-- Tableau des catégories -->
+  <div class="category-table" *ngIf="filteredCategoryList && filteredCategoryList.length > 0; else noCategories">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Photo</th>
+          <th>Nom de la Catégorie</th>
+          <th>Parent</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Affichage des catégories racine et leurs sous-catégories de manière récursive -->
+        <ng-container *ngFor="let category of filteredCategoryList">
+          <ng-container *ngTemplateOutlet="recursiveCategoryTemplate; context: { $implicit: category, level: 0 }"></ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Message si aucune catégorie n'est disponible -->
+  <ng-template #noCategories>
+    <p>Aucune catégorie trouvée...</p>
+  </ng-template>
+
+  <!-- Template récursif pour afficher les catégories et leurs sous-catégories -->
+  <ng-template #recursiveCategoryTemplate let-category let-level="level">
+    <tr>
+      <td>{{ category.id }}</td>
+      <td>
+        <img [src]="category.imageUrl || ''" alt="Category Image" width="50" height="50">
+      </td>
+      <td [style.paddingLeft.px]="level * 20">{{ category.name }}</td>
+      <td *ngIf="category.parentId">{{ getCategoryNameById(category.parentId) }}</td>
+      <td *ngIf="!category.parentId">Catégorie racine</td>
+      <td>
+        <button type="button" class="btn btn-warning mt-3" (click)="onUpdate(category.id)">Modifier</button>
+        <button type="button" class="btn btn-primary mt-3 ms-2" (click)="onDelete(category.id)">Supprimer</button>
+      </td>
+    </tr>
+
+    <!-- Affichage récursif des sous-catégories s'il y en a -->
+    <ng-container *ngFor="let child of category.children">
+      <ng-container *ngTemplateOutlet="recursiveCategoryTemplate; context: { $implicit: child, level: level + 1 }"></ng-container>
+    </ng-container>
+  </ng-template>
+</div>

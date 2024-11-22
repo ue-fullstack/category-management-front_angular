@@ -77,6 +77,9 @@ export class HomepageComponent implements OnInit{
     );
   }
 
+  trackByFn(index: number, item: Category) {
+    return item.id; // Utilisez l'ID de la catégorie pour le suivi
+  }
 
   onSearch() {
     this.currentPage = 0;
