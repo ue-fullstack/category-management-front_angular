@@ -7,7 +7,7 @@
         <div class="d-flex align-items-center mb-5">
           <img
               class="flex-shrink-0 img-fluid border rounded"
-              [src]="category?.image?.name || ''"
+              src="{{ category?.imageUrl }}"
               alt="Category Logo"
               style="width: 80px; height: 80px"
             />
@@ -37,6 +37,7 @@
             <li>Aucun enfant pour cette catégorie</li>
             }
           </ul>
+
         </div>
       </div>
 
@@ -45,24 +46,23 @@
           class="bg-light rounded p-5 mb-4 wow slideInUp"
           data-wow-delay="0.1s"
         >
-          <h4 class="mb-4">Résumé de la Catégorie</h4>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Ajoutée le :
-            {{ category?.createdAt | date : "dd-MMM-yyyy" }}
-          </p>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Code :
-            {{ category?.code }}
-          </p>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Catégorie Racine :
-            {{ category?.root ? "Oui": "Non"}}
-          </p>
-          <p *ngIf="category?.parentId!=null">
-            <i class="fa fa-angle-right text-primary me-2"></i>Parent
-          </p>
-        </div>
-
+        <h4 class="mb-4">Résumé de la Catégorie</h4>
+        <p>
+          <i class="fa fa-angle-right text-primary me-2"></i>Ajoutée le :
+          {{ category?.createdAt | date : "dd-MMM-yyyy" }}
+        </p>
+        <p>
+          <i class="fa fa-angle-right text-primary me-2"></i>Code :
+          {{ category?.code }}
+        </p>
+        <p>
+          <i class="fa fa-angle-right text-primary me-2"></i>Catégorie Racine :
+          {{ category?.root ? "Oui": "Non"}}
+        </p>
+        <p *ngIf="category?.parentId!==null">
+          <i class="fa fa-angle-right text-primary me-2"></i>Parent
+        </p>
+      </div>
         <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
           <h4 class="mb-4">Informations Supplémentaires</h4>
           <p class="m-0">
