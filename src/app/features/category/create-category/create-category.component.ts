@@ -1,9 +1,11 @@
+/* eslint-disable */
+
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NgControlStatus, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Category, Page } from '../../../shared/Category';
 import { CategoryService } from '../../../services/category.service';
-import { ActivatedRoute, ActivationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '../../../services/alert.service';
 
 @Component({
@@ -11,18 +13,22 @@ import { AlertService } from '../../../services/alert.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './create-category.component.html',
-  styleUrl: './create-category.component.css'
+  styleUrls: ['./create-category.component.css']
 })
 export class CreateCategoryComponent implements OnInit {
   categoryForm: FormGroup;
   allCategories: Category[] = [];
-  availableChildren: Category[] = [];
+
+  parentCategories: Category[] = [];
+  childCategories: Category[] = [];
+
   selectedChildren: Category[] = [];
   isEditing = false;
   selectedFile: File | null = null;
   isParentMode = true;
   imagePreview: string | ArrayBuffer | File | null = null;
 
+  router = inject(Router);
   activateRoute = inject(ActivatedRoute);
   aCategory: Category | null = null;
 
@@ -49,7 +55,7 @@ export class CreateCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.loadCategories();
-    
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditing = true;
@@ -60,9 +66,16 @@ export class CreateCategoryComponent implements OnInit {
   loadCategories() {
     this.categoryService.getAllCategories().subscribe((res: Page<Category>) => {
       this.allCategories = res._embedded.categoryList;
+
+      // Filtrer les catégories parent
+      this.parentCategories = this.allCategories.filter(category => category.children.length > 0);
+
+      // Filtrer les catégories enfant
+      this.childCategories = this.allCategories.filter(category => category.parentId !== null);
+
       this.updateAvailableChildren();
     }, error => {
-      this.alertService.showAlert("API error");
+      this.alertService.showAlert(error);
     });
   }
 
@@ -86,8 +99,8 @@ export class CreateCategoryComponent implements OnInit {
   }
 
   updateAvailableChildren() {
-    this.availableChildren = this.allCategories.filter(c => 
-      !this.selectedChildren.some(sc => sc.id === c.id) && 
+    this.childCategories = this.allCategories.filter(c =>
+      !this.selectedChildren.some(sc => sc.id === c.id) &&
       c.id !== this.categoryForm.get('id')?.value
     );
   }
@@ -134,30 +147,30 @@ export class CreateCategoryComponent implements OnInit {
         console.log('Nombre d\'enfants:', this.aCategory.children.length);
       }
     }, error => {
-      this.alertService.showAlert("Erreur lors de la récupération des données de la catégorie.");
+      this.alertService.showError(error)
     });
   }
-
-
 
   onSubmit() {
     if (this.categoryForm.valid) {
       const formData = new FormData();
-      Object.keys(this.categoryForm.value).forEach(key => {
-        if (key === 'parentId') {
-          const parentId = this.categoryForm.get(key)?.value;
-          if (parentId !== null && parentId !== '') {
-            formData.append(key, parentId);
-          }
-        } else if (key === 'children') {
-          formData.append(key, JSON.stringify(this.selectedChildren.map(c => c.id)));
-        } else {
-          formData.append(key, this.categoryForm.get(key)?.value);
-        }
-      });
+      formData.append('name', this.categoryForm.get('name')?.value);
+      formData.append('description', this.categoryForm.get('description')?.value);
+
+      const parentId = this.categoryForm.get('parentId')?.value;
+      if (parentId !== null && parentId !== '') {
+        formData.append('parentId', parentId);
+      }
+
+      formData.append('root', this.isParentMode ? 'true' : 'false');
 
       if (this.selectedFile) {
         formData.append('image', this.selectedFile, this.selectedFile.name);
+      }
+
+      const childrenIds = this.selectedChildren.map(child => child.id.toString());
+      if (childrenIds.length > 0) {
+        childrenIds.forEach(id => formData.append('childrenIds', id));
       }
 
       if (this.isEditing) {
@@ -167,8 +180,9 @@ export class CreateCategoryComponent implements OnInit {
             response => {
               console.log('Catégorie mise à jour avec succès', response);
               this.alertService.showAlert('Categorie mise à jour avec succès');
+              this.router.navigate(['/management']); // Rafraîchir la page
             },
-            error => console.error('Erreur lors de la mise à jour de la catégorie', error)
+            error => this.alertService.showError(error)
           );
         }
       } else {
@@ -176,13 +190,11 @@ export class CreateCategoryComponent implements OnInit {
           response => {
             console.log('Catégorie créée avec succès', response);
             this.alertService.showAlert("Catégorie crée avec succès");
+            this.router.navigate(['/management']); // Rafraîchir la page
           },
-          error => console.error('Erreur lors de la création de la catégorie', error)
+          error => this.alertService.showError(error)
         );
       }
     }
   }
-
-
-
 }

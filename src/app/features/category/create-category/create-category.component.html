@@ -1,4 +1,4 @@
-<div class="container col-lg-6">
+<div class="container col-lg-6 mt-5">
   <div class="card">
     <div class="card-header">
       <h4 class="mb-1">{{ isEditing ? 'Modifier' : 'Nouvelle' }} catégorie</h4>
@@ -9,11 +9,11 @@
           <div class="col-12 col-sm-6">
             <input type="text" class="form-control" formControlName="name" placeholder="Nom de la catégorie" required>
           </div>
-          
+
           <div class="col-12 col-sm-6">
             <input type="file" class="form-control bg-white" (change)="onFileSelected($event)" accept="image/*" required>
           </div>
-          
+
           <!-- Prévisualisation de l'image -->
           <div class="col-12 text-center" *ngIf="imagePreview">
             <img [src]="imagePreview" alt="Prévisualisation" style="max-width: 100%; max-height: 200px;">
@@ -22,7 +22,7 @@
           <div class="col-12">
             <textarea class="form-control" rows="3" formControlName="description" placeholder="Description de la catégorie"></textarea>
           </div>
-          
+
           <div class="col-12 mb-3">
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" [(ngModel)]="isParentMode" [ngModelOptions]="{standalone: true}" (change)="toggleParentChildren()">
@@ -31,14 +31,14 @@
               </label>
             </div>
           </div>
-  
+
           <div class="col-12" *ngIf="isParentMode">
             <select class="form-control" formControlName="parentId">
               <option value="">Sélectionner une catégorie parente (optionnel)</option>
-              <option *ngFor="let category of allCategories" [value]="category.id">{{ category.name }}</option>
+              <option *ngFor="let category of parentCategories" [value]="category.id">{{ category.name }}</option>
             </select>
           </div>
-  
+
           <div class="col-12" *ngIf="!isParentMode">
             <h5>Enfants sélectionnés:</h5>
             <div *ngFor="let child of selectedChildren" class="form-check">
@@ -47,9 +47,9 @@
                 {{ child.name }}
               </label>
             </div>
-  
+
             <h5>Enfants disponibles:</h5>
-            <div *ngFor="let child of availableChildren" class="form-check">
+            <div *ngFor="let child of childCategories" class="form-check">
               <input class="form-check-input" type="checkbox" [id]="'availableChild' + child.id" [checked]="false" (change)="toggleChildSelection(child)">
               <label class="form-check-label" [for]="'availableChild' + child.id">
                 {{ child.name }}

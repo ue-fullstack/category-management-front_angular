@@ -4,10 +4,16 @@ export interface Category {
     code: string;
     description: string;
     image: File;
+    imageUrl: string; //
     children: Category[];
     createdAt: string;
     root: boolean;
     parentId?: number | null;
+  }
+
+
+  export interface SearchParams {
+    [key: string]: string | number | boolean | null | undefined;
   }
 
 

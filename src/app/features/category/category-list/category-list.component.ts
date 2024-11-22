@@ -8,53 +8,60 @@ import { AlertService } from '../../../services/alert.service';
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [RouterLink,CommonModule],
+  imports: [RouterLink, CommonModule],
   templateUrl: './category-list.component.html',
-  styleUrl: './category-list.component.css'
+  styleUrls: ['./category-list.component.css']
 })
-export class CategoryListComponent implements OnInit{
-
+export class CategoryListComponent implements OnInit {
   activateRoute = inject(ActivatedRoute);
   categoryService = inject(CategoryService);
-
   categoryList: Category[] = [];
   route = inject(Router);
 
-  constructor( private alertService: AlertService){
+  constructor(private alertService: AlertService) {
     this.getAllCategories();
   }
 
-  viewDetails(id: number){
+  ngOnInit(): void {
+    this.getAllCategories();
+  }
+
+  viewDetails(id: number) {
     this.route.navigate(['categorydetail', id]);
   }
 
-  getAllCategories(){
-    this.categoryService.getAllCategories().subscribe((res: Page<Category>)=>{
-      this.categoryList = res._embedded.categoryList;
-     }, error=>{
-       this.alertService.showAlert("API error");
-     })
+  getAllCategories() {
+    this.categoryService.getAllCategories().subscribe(
+      (res: Page<Category>) => {
+        this.categoryList = res._embedded.categoryList;
+      },
+      error => {
+        this.alertService.showError(error);
+      }
+    );
   }
 
-  onDelete(id : number){
-    const isDelete = confirm('Êtes-vous sûr de voiloir supprimer cette catégorie ?');
-    if(isDelete){
-      this.categoryService.deleteCategoryById(id).subscribe((res: Category)=>{
-        this.alertService.showAlert("Category Deleted with success");
-        this.getAllCategories();
-       }, error=>{
-        this.alertService.showAlert("API error");
-       })
+  onDelete(id: number) {
+    const isDelete = confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');
+    if (isDelete) {
+      this.categoryService.deleteCategoryById(id).subscribe(
+        (res: Category) => {
+          this.alertService.showAlert('Catégorie supprimée avec succès');
+          this.getAllCategories();
+        },
+        error => {
+          this.alertService.showError(error);
+        }
+      );
     }
   }
 
   getCategoryNameById(id: number): string | null {
     const parentCategory = this.categoryList.find(category => category.id === id);
     return parentCategory ? parentCategory.name : null;
-}
+  }
 
-
-  ngOnInit(): void {
-      this.getAllCategories();
+  trackByFn(index: number, item: Category) {
+    return item.id; // Utilisez l'ID de la catégorie pour le suivi
   }
 }
