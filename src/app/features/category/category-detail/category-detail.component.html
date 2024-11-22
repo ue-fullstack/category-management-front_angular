@@ -7,7 +7,7 @@
         <div class="d-flex align-items-center mb-5">
           <img
               class="flex-shrink-0 img-fluid border rounded"
-              src="{{ category?.image }}"
+              [src]="category?.image?.name || ''"
               alt="Category Logo"
               style="width: 80px; height: 80px"
             />
@@ -18,7 +18,6 @@
                 category?.code
               }}</span
             >
-            <!-- <span class="text-truncate me-3"><i class="fa fa-cube text-primary me-2"></i>Type: Alimentaire</span> -->
           </div>
         </div>
 
@@ -38,13 +37,6 @@
             <li>Aucun enfant pour cette catégorie</li>
             }
           </ul>
-
-          <h4 class="mb-3">Conditions d'utilisation</h4>
-          <p>
-            Conditions d'utilisation spécifiques de la catégorie, telles que les
-            règles et directives à suivre pour les produits inclus dans cette
-            catégorie.
-          </p>
         </div>
       </div>
 
@@ -63,17 +55,14 @@
             {{ category?.code }}
           </p>
           <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Type :
-            Alimentaire
+            <i class="fa fa-angle-right text-primary me-2"></i>Catégorie Racine :
+            {{ category?.root ? "Oui": "Non"}}
           </p>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Nombre de
-            produits : 200
-          </p>
-          <p>
-            <i class="fa fa-angle-right text-primary me-2"></i>Statut : Active
+          <p *ngIf="category?.parentId!=null">
+            <i class="fa fa-angle-right text-primary me-2"></i>Parent
           </p>
         </div>
+
         <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
           <h4 class="mb-4">Informations Supplémentaires</h4>
           <p class="m-0">

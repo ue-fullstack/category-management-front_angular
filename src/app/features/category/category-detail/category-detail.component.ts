@@ -2,24 +2,24 @@ import { Component, inject } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { Category } from '../../../shared/Category';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule, DatePipe } from '@angular/common';
+import {CommonModule, DatePipe, NgOptimizedImage} from '@angular/common';
 import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-category-detail',
   standalone: true,
-  imports: [DatePipe, CommonModule],
+  imports: [DatePipe, CommonModule, NgOptimizedImage],
   templateUrl: './category-detail.component.html',
   styleUrl: './category-detail.component.css'
 })
 export class CategoryDetailComponent {
   categoryService = inject(CategoryService);
-  category: Category | null = null; 
+  category: Category | null = null;
 
   activateRoute = inject(ActivatedRoute);
 
   constructor(private alertService: AlertService) {
-    
+
     this.activateRoute.params.subscribe((params: any) => {
       const id = +params['id'];
       if (id) {
