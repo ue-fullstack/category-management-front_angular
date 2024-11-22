@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Category, Page } from '../shared/Category';
+import { Category, Page, SearchParams } from '../shared/Category';
 import { ProgressService } from './progress.service';
 import { finalize } from 'rxjs/operators';
 
@@ -66,11 +66,13 @@ createCategory(categoryData: Category | FormData): Observable<Category> {
 }
 
 //recherche de categories
-searchCategories(params: any): Observable<Page<Category>> {
+searchCategories(params: SearchParams): Observable<Page<Category>> {
   let queryParams = new HttpParams();
-  Object.keys(params).forEach(key => {
-    if (params[key] !== null && params[key] !== undefined) {
-      queryParams = queryParams.append(key, params[key]);
+  
+  Object.keys(params).forEach((key) => {
+    const value = params[key];
+    if (value !== null && value !== undefined) {
+      queryParams = queryParams.append(key, String(value)); // Convertit en chaîne pour HttpParams
     }
   });
 

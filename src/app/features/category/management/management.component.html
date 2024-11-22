@@ -4,7 +4,7 @@
   <!-- Liste déroulante pour le tri -->
   <div class="mb-3">
     <label for="sortSelect">Trier par :</label>
-    <select id="sortSelect" class="form-select" (change)="filterCategories($event)">
+    <select id="sortSelect" class="form-select" (change)="filterCategories($event)" (keyup)="filterCategories($event)" (keydown)="filterCategories($event)" (keypress)="filterCategories($event)" tabindex="0">
       <option value="">Sélectionnez un critère</option>
       <option value="parent">Parent</option>
       <option value="children">Enfant</option>
@@ -49,8 +49,8 @@
       <td *ngIf="category.parentId">{{ getCategoryNameById(category.parentId) }}</td>
       <td *ngIf="!category.parentId">Catégorie racine</td>
       <td>
-        <button type="button" class="btn btn-warning mt-3" (click)="onUpdate(category.id)">Modifier</button>
-        <button type="button" class="btn btn-primary mt-3 ms-2" (click)="onDelete(category.id)">Supprimer</button>
+        <button type="button" class="btn btn-warning mt-3" (click)="onUpdate(category.id)" (keyup)="onUpdate(category.id)" (keydown)="onUpdate(category.id)" (keypress)="onUpdate(category.id)" tabindex="0">Modifier</button>
+        <button type="button" class="btn btn-primary mt-3 ms-2" (click)="onDelete(category.id)" (keyup)="onDelete(category.id)" (keydown)="onDelete(category.id)" (keypress)="onDelete(category.id)" tabindex="0">Supprimer</button>
       </td>
     </tr>
 

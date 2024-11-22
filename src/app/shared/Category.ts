@@ -12,6 +12,11 @@ export interface Category {
   }
 
 
+  export interface SearchParams {
+    [key: string]: string | number | boolean | null | undefined;
+  }
+
+
 // Ajoutez une interface pour le type de Page
 export interface Page<T> {
   _embedded: {
