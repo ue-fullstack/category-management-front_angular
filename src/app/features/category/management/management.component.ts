@@ -1,31 +1,36 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { Category, Page } from '../../../shared/Category';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../services/category.service';
-import { Category, Page } from '../../../shared/Category';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AlertService } from '../../../services/alert.service';
 
 @Component({
-  selector: 'app-category-list',
+  selector: 'app-management',
   standalone: true,
-  imports: [RouterLink,CommonModule],
-  templateUrl: './category-list.component.html',
-  styleUrl: './category-list.component.css'
+  imports: [RouterLink, CommonModule],
+  templateUrl: './management.component.html',
+  styleUrl: './management.component.css'
 })
-export class CategoryListComponent implements OnInit{
+export class ManagementComponent implements OnInit{
 
   activateRoute = inject(ActivatedRoute);
   categoryService = inject(CategoryService);
 
   categoryList: Category[] = [];
   route = inject(Router);
-
-  constructor( private alertService: AlertService){
+  
+  constructor(private alertService: AlertService){
     this.getAllCategories();
   }
 
-  viewDetails(id: number){
+  onView(id: number){
     this.route.navigate(['categorydetail', id]);
+  }
+
+  onUpdate(id: number){
+    this.route.navigate(['createcategory', id]);
   }
 
   getAllCategories(){
