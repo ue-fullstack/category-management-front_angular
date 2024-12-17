@@ -1,79 +1,69 @@
 <!-- Category Detail Start -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
   <div class="container">
-    @if (category?.id) {
-    <div class="row gy-5 gx-4">
-      <div class="col-lg-8">
-        <div class="d-flex align-items-center mb-5">
-          <img
+    <div *ngIf="category?.id">
+      <div class="row gy-5 gx-4">
+        <div class="col-lg-8">
+          <div class="d-flex align-items-center mb-5">
+            <img
               class="flex-shrink-0 img-fluid border rounded"
-              src="{{ category?.imageUrl }}"
+              [src]="category?.imageUrl"
               alt="Category Logo"
               style="width: 80px; height: 80px"
             />
-          <div class="text-start ps-4">
-            <h3 class="mb-3">{{ category?.name }}</h3>
-            <span class="text-truncate me-3"
-              ><i class="fa fa-tag text-primary me-2"></i>Code Catégorie:{{
-                category?.code
-              }}</span
-            >
+            <div class="text-start ps-4">
+              <h3 class="mb-3">{{ category?.name }}</h3>
+              <span class="text-truncate me-3">
+                <i class="fa fa-tag text-primary me-2"></i>Code Catégorie: {{ category?.code }}
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3">Description de la Catégorie</h4>
+            <p>{{ category?.description }}</p>
+
+            <h4 class="mb-3">Enfants</h4>
+            <ul class="list-unstyled">
+              <li *ngIf="(category?.children?.length ?? 0) > 0">
+                <ul>
+                  <li *ngFor="let child of category?.children; trackBy: trackByFn">
+                    <a
+                      class="text-decoration-none text-primary d-flex align-items-center"
+                      (click)="viewDetails(child.id)"
+                      style="cursor: pointer; transition: all 0.3s ease;"
+                      >
+                      <i class="fa fa-angle-right text-primary me-2"></i>{{ child.name }}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li *ngIf="(category?.children?.length ?? 0) === 0">
+                Aucun enfant pour cette catégorie
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div class="mb-5">
-          <h4 class="mb-3">Description de la Catégorie</h4>
-          <p>{{ category?.description }}.</p>
+        <div class="col-lg-4">
+          <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
+            <h4 class="mb-4">Résumé de la Catégorie</h4>
+            <p><i class="fa fa-angle-right text-primary me-2"></i>Ajoutée le : {{ category?.createdAt | date: 'dd-MMM-yyyy' }}</p>
+            <p><i class="fa fa-angle-right text-primary me-2"></i>Code : {{ category?.code }}</p>
+            <p><i class="fa fa-angle-right text-primary me-2"></i>Catégorie Racine : {{ category?.root ? 'Oui' : 'Non' }}</p>
+            <p *ngIf="category?.parentId !== null"><i class="fa fa-angle-right text-primary me-2"></i>Parent</p>
+          </div>
 
-          <h4 class="mb-3">Enfants</h4>
-          <ul class="list-unstyled">
-            @if ((category?.children?.length ?? 0) > 0) { @for (child of
-            category!.children; track child.id) {
-            <li>
-              <i class="fa fa-angle-right text-primary me-2"></i
-              >{{ child.name }}
-            </li>
-            } } @else {
-            <li>Aucun enfant pour cette catégorie</li>
-            }
-          </ul>
-
-        </div>
-      </div>
-
-      <div class="col-lg-4">
-        <div
-          class="bg-light rounded p-5 mb-4 wow slideInUp"
-          data-wow-delay="0.1s"
-        >
-        <h4 class="mb-4">Résumé de la Catégorie</h4>
-        <p>
-          <i class="fa fa-angle-right text-primary me-2"></i>Ajoutée le :
-          {{ category?.createdAt | date : "dd-MMM-yyyy" }}
-        </p>
-        <p>
-          <i class="fa fa-angle-right text-primary me-2"></i>Code :
-          {{ category?.code }}
-        </p>
-        <p>
-          <i class="fa fa-angle-right text-primary me-2"></i>Catégorie Racine :
-          {{ category?.root ? "Oui": "Non"}}
-        </p>
-        <p *ngIf="category?.parentId!==null">
-          <i class="fa fa-angle-right text-primary me-2"></i>Parent
-        </p>
-      </div>
-        <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
-          <h4 class="mb-4">Informations Supplémentaires</h4>
-          <p class="m-0">
-            Informations supplémentaires sur cette catégorie, telles que des
-            restrictions d’utilisation, des directives de gestion, ou des
-            détails spécifiques aux produits associés.
-          </p>
+          <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
+            <h4 class="mb-4">Informations Supplémentaires</h4>
+            <p class="m-0">
+              Informations supplémentaires sur cette catégorie, telles que des restrictions d’utilisation,
+              des directives de gestion, ou des détails spécifiques aux produits associés.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-    }
   </div>
 </div>
 <!-- Category Detail End -->

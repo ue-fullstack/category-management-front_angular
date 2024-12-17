@@ -16,28 +16,44 @@
 <!-- Search Start -->
 <div class="container-fluid bg-info mb-0 wow fadeIn" data-wow-delay="0.1s" style="padding: 25px;">
   <div class="container">
-    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-      <div class="row g-3">
-        <div class="col-md-3">
-          <label for="name">Par nom</label>
-          <input type="text" class="form-control border-0" formControlName="name" placeholder="Nom catégorie" />
-        </div>
-        <div class="col-md-2">
-          <label for="date">Par date</label>
-          <input type="date" class="form-control" formControlName="date">
-        </div>
-        <div class="col-md-3">
-          <label for="parentType">Par parent | Root</label>
-          <select class="form-select border-0" formControlName="parentType">
-            <option value="">Catégorie parent</option>
-            <option value="parent">Parent</option>
-            <option value="root">Root</option>
-            <option value="child">Enfant</option>
-          </select>
-        </div>
-        <div class="col-md-2"> <br>
-          <button type="submit" class="btn btn-light border-0 w-100">Rechercher</button>
-        </div>
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-form row g-3">
+      <div class="col-md-4">
+        <label for="name" class="form-label">Nom de la catégorie :</label>
+        <input id="name" formControlName="name" type="text" class="form-control" placeholder="Rechercher par nom" />
+      </div>
+      <div class="col-md-2">
+        <label for="isRoot" class="form-label">Est racine :</label>
+        <select id="isRoot" formControlName="isRoot" class="form-select">
+          <option value="">Tous</option>
+          <option value="true">Oui</option>
+          <option value="false">Non</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="afterDate" class="form-label">Date après :</label>
+        <input id="afterDate" formControlName="afterDate" type="datetime-local" class="form-control" />
+      </div>
+      <div class="col-md-3">
+        <label for="beforeDate" class="form-label">Date avant :</label>
+        <input id="beforeDate" formControlName="beforeDate" type="datetime-local" class="form-control" />
+      </div>
+      <div class="col-md-2">
+        <label for="sortBy" class="form-label">Trier par :</label>
+        <select id="sortBy" formControlName="sortBy" class="form-select">
+          <option value="name">Nom</option>
+          <option value="childrenCount">Nombre d'enfants</option>
+          <option value="createdDate">Date de création</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="ascending" class="form-label">Ordre :</label>
+        <select id="ascending" formControlName="ascending" class="form-select">
+          <option value="true">Ascendant</option>
+          <option value="false">Descendant</option>
+        </select>
+      </div>
+      <div class="col-md-3 align-self-end">
+        <button type="submit" class="btn btn-primary w-100">Rechercher</button>
       </div>
     </form>
   </div>
@@ -46,32 +62,37 @@
 
 <!-- Résultats de recherche -->
 <div class="container mt-4" *ngIf="hasSearched">
-  <table class="table" *ngIf="categories.length > 0">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Description</th>
-        <th>Type</th>
-        <th>Date de création</th>
-      </tr>
+  <table class="table table-hover" *ngIf="categories.length > 0">
+    <thead class="table-dark">
+    <tr>
+      <th>Nom</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Date de création</th>
+    </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let category of categories">
-        <td>{{ category.name }}</td>
-        <td>{{ category.description }}</td>
-        <td>{{ category.parentId ? 'Enfant' : (category.children.length > 0 ? 'Parent' : 'Root') }}</td>
-        <td>{{ category.createdAt | date }}</td>
-      </tr>
+    <tr *ngFor="let category of categories; trackBy: trackByFn" (click)="viewDetails(category.id)" style="cursor: pointer;">
+      <td>{{ category.name }}</td>
+      <td>{{ category.description }}</td>
+      <td>{{ category.children.length == 0 ? 'Enfant' : (category.parentId ? 'Parent' : 'Racine') }}</td>
+      <td>{{ category.createdAt | date: 'shortDate' }}</td>
+    </tr>
     </tbody>
   </table>
 
-  <p *ngIf="categories.length === 0">Aucun résultat trouvé.</p>
+  <p *ngIf="categories.length === 0" class="text-center">Aucun résultat trouvé.</p>
 
-  <nav aria-label="Page navigation" *ngIf="categories.length > 0">
+  <!-- Pagination -->
+  <nav aria-label="Pagination">
     <ul class="pagination justify-content-center">
       <li class="page-item" [class.disabled]="currentPage === 0">
         <a class="page-link" (click)="onPageChange(currentPage - 1)">Précédent</a>
       </li>
+      <li class="page-item" [class.active]="i === currentPage" *ngFor="let i of pages">
+        <a class="page-link" (click)="onPageChange(i)">{{ i + 1 }}</a>
+      </li>
+
       <li class="page-item" [class.disabled]="(currentPage + 1) * pageSize >= totalElements">
         <a class="page-link" (click)="onPageChange(currentPage + 1)">Suivant</a>
       </li>
@@ -83,14 +104,23 @@
 <!-- Category Start -->
 <div class="container-xxl py-5">
   <div class="container">
-    <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Catégories</h1>
+    <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Catégories racines</h1>
     <div class="row g-4">
       <ng-container *ngFor="let item of categoryList; trackBy: trackByFn">
-        <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-          <a class="cat-item rounded p-4" (click)="viewDetails(item.id)" (keyup)="viewDetails(item.id)" (keydown)="viewDetails(item.id)" (keypress)="viewDetails(item.id)" tabindex="0">
-
+        <div *ngIf="item.parentId==null" class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
+          <!-- Lien interactif avec accessibilité clavier -->
+          <a
+            class="cat-item rounded p-4"
+            (click)="viewDetails(item.id)"
+            (keydown.enter)="viewDetails(item.id)"
+            (keydown.space)="viewDetails(item.id)"
+            tabindex="0"
+            role="button"
+          >
             <div class="image-container">
-              <img class="img-fluid mb-4" [src]="item.imageUrl || 'default-image-url.jpg'" alt="{{ item.name }} Image">
+              <img
+                class="img-fluid mb-4"
+                [src]="item.imageUrl==null ? item.imageUrl : 'assets/img/categorize.png'">
             </div>
             <h6 class="mb-3">{{ item.name }}</h6>
             <p class="mb-0">{{ item.children.length }} Catégories Enfants</p>
@@ -111,35 +141,37 @@
       <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
         <li class="nav-item">
           <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-1">
-            <h6 class="mt-n1 mb-0">Popular</h6>
+            <h6 class="mt-n1 mb-0">Racines</h6>
           </a>
         </li>
         <li class="nav-item">
           <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
-            <h6 class="mt-n1 mb-0">New Arrivals</h6>
+            <h6 class="mt-n1 mb-0">Parents</h6>
           </a>
         </li>
         <li class="nav-item">
           <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
-            <h6 class="mt-n1 mb-0">Best Sellers</h6>
+            <h6 class="mt-n1 mb-0">Enfants</h6>
           </a>
         </li>
       </ul>
       <div class="tab-content">
         <!-- Popular Categories -->
         <div id="tab-1" class="tab-pane fade show p-0 active">
-          <div class="category-item p-4 mb-4">
-            <div class="row g-4">
+          <div class="category-item p-4 mb-4" *ngFor="let rootCategory of categoryList">
+            <div *ngIf="rootCategory.parentId==null" class="row g-4">
               <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                <img class="flex-shrink-0 img-fluid border rounded"  alt="Category Image" style="width: 80px; height: 80px;"
-                     fill>
+                <!-- Remplacer par l'image dynamique si elle existe -->
+                <img class="flex-shrink-0 img-fluid border rounded"
+                     alt="Category Image" style="width: 80px; height: 80px;"
+                     [src]="rootCategory.imageUrl==null ? rootCategory.imageUrl : 'assets/img/categorize.png'">
                 <div class="text-start ps-4">
-                  <h5 class="mb-3">Electronics</h5>
-                  <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>50 Products</span>
+                  <h5 class="mb-3">{{ rootCategory.name }}</h5>
+                  <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>{{ rootCategory.children?.length }} Catégories</span>
                 </div>
               </div>
               <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                <a class="btn btn-secondary" href="">Voir catégorie</a>
+                <a class="btn btn-secondary" (click)="viewDetails(rootCategory.id)">Voir catégorie</a>
               </div>
             </div>
           </div>
@@ -147,18 +179,21 @@
 
         <!-- New Arrivals Categories -->
         <div id="tab-2" class="tab-pane fade show p-0">
-          <div class="category-item p-4 mb-4">
-            <div class="row g-4">
+          <!-- Affichage des catégories enfants -->
+          <div class="category-item p-4 mb-4" *ngFor="let category of categoryList">
+            <div *ngIf="category.children.length > 0" class="row g-4">
               <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                <img class="flex-shrink-0 img-fluid border rounded"  alt="Category Image" style="width: 80px; height: 80px;"
-                     fill>
+                <!-- Image dynamique -->
+                <img class="flex-shrink-0 img-fluid border rounded"
+                     alt="Category Image" style="width: 80px; height: 80px;"
+                     [src]="category.imageUrl==null ? category.imageUrl : 'assets/img/categorize.png'">
                 <div class="text-start ps-4">
-                  <h5 class="mb-3">Home Appliances</h5>
-                  <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>30 Products</span>
+                  <h5 class="mb-3">{{ category.name }}</h5>
+                  <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>{{ category.children?.length }} Sous-catégories</span>
                 </div>
               </div>
               <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                <a class="btn btn-secondary" href="">Voir catégorie</a>
+                <a class="btn btn-secondary" (click)="viewDetails(category.id)">Voir catégorie</a>
               </div>
             </div>
           </div>
@@ -166,18 +201,21 @@
 
         <!-- Best Sellers Categories -->
         <div id="tab-3" class="tab-pane fade show p-0">
-          <div class="category-item p-4 mb-4">
-            <div class="row g-4">
+          <!-- Affichage des catégories enfants -->
+          <div class="category-item p-4 mb-4" *ngFor="let category of categoryList">
+            <div *ngIf="category.children.length == 0" class="row g-4">
               <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                <img class="flex-shrink-0 img-fluid border rounded"  alt="Category Image" style="width: 80px; height: 80px;"
-                     fill>
+                <!-- Image dynamique -->
+                <img class="flex-shrink-0 img-fluid border rounded"
+                     alt="Category Image" style="width: 80px; height: 80px;"
+                     [src]="category.imageUrl==null ? category.imageUrl : 'assets/img/categorize.png'">
                 <div class="text-start ps-4">
-                  <h5 class="mb-3">Fashion</h5>
-                  <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>120 Products</span>
+                  <h5 class="mb-3">{{ category.name }}</h5>
+                  <span class="text-truncate me-3"><i class="fa fa-tags text-secondary me-2"></i>{{ category.children?.length }} Sous-catégories</span>
                 </div>
               </div>
               <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                <a class="btn btn-secondary" href="">Voir catégorie</a>
+                <a class="btn btn-secondary" (click)="viewDetails(category.id)">Voir catégorie</a>
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class CategoryService {
 
-  
+
 
   apiURL : string  = "http://localhost:8080/api/categories";
   constructor(private http: HttpClient, private progressService: ProgressService) { }
@@ -65,10 +65,49 @@ createCategory(categoryData: Category | FormData): Observable<Category> {
   );
 }
 
+
+  getRootCategories(page: number = 0, size: number = 10): Observable<Page<Category>> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<Page<Category>>(`${this.apiURL}/roots`, { params }).pipe(
+      finalize(() => {
+        this.progressService.hide();
+      })
+    );
+  }
+  searchCategoriesByName(name: string, page: number = 0, size: number = 10): Observable<Page<Category>> {
+    const params = new HttpParams()
+      .set('name', name)
+      .set('page', page)
+      .set('size', size);
+
+    return this.http.get<Page<Category>>(`${this.apiURL}/searchbyname`, { params }).pipe(
+      finalize(() => {
+        this.progressService.hide();
+      })
+    );
+  }
+
+  advancedSearchCategories(params: any): Observable<Page<Category>> {
+    let queryParams = new HttpParams();
+
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        queryParams = queryParams.append(key, params[key].toString());
+      }
+    });
+
+    return this.http.get<Page<Category>>(`${this.apiURL}/search`, { params: queryParams }).pipe(
+      finalize(() => {
+        this.progressService.hide();
+      })
+    );
+  }
+
+
 //recherche de categories
 searchCategories(params: SearchParams): Observable<Page<Category>> {
   let queryParams = new HttpParams();
-  
+
   Object.keys(params).forEach((key) => {
     const value = params[key];
     if (value !== null && value !== undefined) {

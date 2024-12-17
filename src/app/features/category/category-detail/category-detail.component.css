@@ -1,0 +1,13 @@
+/* Effet de survol pour l'élément cliquable */
+li a:hover {
+  color: #007bff; /* Change la couleur au survol */
+  text-decoration: underline; /* Ajoute un soulignement au survol */
+  transform: scale(1.05); /* Ajoute un léger zoom sur le texte */
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2); /* Ajoute une ombre autour de l'élément au survol */
+}
+
+/* Si vous voulez changer l'apparence du texte au survol */
+li a {
+  padding: 5px 0; /* Ajoute un peu de padding pour l'espace autour du texte */
+  border-radius: 4px; /* Arrondir les bords */
+}
