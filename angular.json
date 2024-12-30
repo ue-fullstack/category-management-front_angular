@@ -26,7 +26,8 @@
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/font-awesome/css/font-awesome.min.css",
+              "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css",
+              "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -102,11 +103,23 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "76ac0b7a-1485-48fa-ad22-8b071ac10177"
+    "analytics": "76ac0b7a-1485-48fa-ad22-8b071ac10177",
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

@@ -1,47 +1,66 @@
 <!-- Category Detail Start -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
   <div class="container">
-    <div class="row gy-5 gx-4">
-      <div class="col-lg-8">
-        <div class="d-flex align-items-center mb-5">
-          <img class="flex-shrink-0 img-fluid border rounded" src="img/category-logo.jpg" alt="Category Logo" style="width: 80px; height: 80px;">
-          <div class="text-start ps-4">
-            <h3 class="mb-3">Nom de la Catégorie</h3>
-            <span class="text-truncate me-3"><i class="fa fa-tag text-primary me-2"></i>Code Catégorie: CAT123</span>
-            <span class="text-truncate me-3"><i class="fa fa-cube text-primary me-2"></i>Type: Alimentaire</span>
+    <div *ngIf="category?.id">
+      <div class="row gy-5 gx-4">
+        <div class="col-lg-8">
+          <div class="d-flex align-items-center mb-5">
+            <img
+              class="flex-shrink-0 img-fluid border rounded"
+              [src]="category?.imageUrl"
+              alt="Category Logo"
+              style="width: 80px; height: 80px"
+            />
+            <div class="text-start ps-4">
+              <h3 class="mb-3">{{ category?.name }}</h3>
+              <span class="text-truncate me-3">
+                <i class="fa fa-tag text-primary me-2"></i>Code Catégorie: {{ category?.code }}
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-5">
+            <h4 class="mb-3">Description de la Catégorie</h4>
+            <p>{{ category?.description }}</p>
+
+            <h4 class="mb-3">Enfants</h4>
+            <ul class="list-unstyled">
+              <li *ngIf="(category?.children?.length ?? 0) > 0">
+                <ul>
+                  <li *ngFor="let child of category?.children; trackBy: trackByFn">
+                    <a
+                      class="text-decoration-none text-primary d-flex align-items-center"
+                      (click)="viewDetails(child.id)"
+                      style="cursor: pointer; transition: all 0.3s ease;"
+                      >
+                      <i class="fa fa-angle-right text-primary me-2"></i>{{ child.name }}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li *ngIf="(category?.children?.length ?? 0) === 0">
+                Aucun enfant pour cette catégorie
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div class="mb-5">
-          <h4 class="mb-3">Description de la Catégorie</h4>
-          <p>Voici une description complète de la catégorie, incluant toutes les informations importantes et pertinentes.</p>
+        <div class="col-lg-4">
+          <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
+            <h4 class="mb-4">Résumé de la Catégorie</h4>
+            <p><i class="fa fa-angle-right text-primary me-2"></i>Ajoutée le : {{ category?.createdAt | date: 'dd-MMM-yyyy' }}</p>
+            <p><i class="fa fa-angle-right text-primary me-2"></i>Code : {{ category?.code }}</p>
+            <p><i class="fa fa-angle-right text-primary me-2"></i>Catégorie Racine : {{ category?.root ? 'Oui' : 'Non' }}</p>
+            <p *ngIf="category?.parentId !== null"><i class="fa fa-angle-right text-primary me-2"></i>Parent</p>
+          </div>
 
-          <h4 class="mb-3">Caractéristiques</h4>
-          <ul class="list-unstyled">
-            <li><i class="fa fa-angle-right text-primary me-2"></i>Caractéristique 1 de la catégorie</li>
-            <li><i class="fa fa-angle-right text-primary me-2"></i>Caractéristique 2 de la catégorie</li>
-            <li><i class="fa fa-angle-right text-primary me-2"></i>Caractéristique 3 de la catégorie</li>
-            <li><i class="fa fa-angle-right text-primary me-2"></i>Caractéristique 4 de la catégorie</li>
-            <li><i class="fa fa-angle-right text-primary me-2"></i>Caractéristique 5 de la catégorie</li>
-          </ul>
-
-          <h4 class="mb-3">Conditions d'utilisation</h4>
-          <p>Conditions d'utilisation spécifiques de la catégorie, telles que les règles et directives à suivre pour les produits inclus dans cette catégorie.</p>
-        </div>
-      </div>
-
-      <div class="col-lg-4">
-        <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
-          <h4 class="mb-4">Résumé de la Catégorie</h4>
-          <p><i class="fa fa-angle-right text-primary me-2"></i>Ajoutée le : 01 Jan, 2045</p>
-          <p><i class="fa fa-angle-right text-primary me-2"></i>Code : CAT123</p>
-          <p><i class="fa fa-angle-right text-primary me-2"></i>Type : Alimentaire</p>
-          <p><i class="fa fa-angle-right text-primary me-2"></i>Nombre de produits : 200</p>
-          <p><i class="fa fa-angle-right text-primary me-2"></i>Statut : Active</p>
-        </div>
-        <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
-          <h4 class="mb-4">Informations Supplémentaires</h4>
-          <p class="m-0">Informations supplémentaires sur cette catégorie, telles que des restrictions d’utilisation, des directives de gestion, ou des détails spécifiques aux produits associés.</p>
+          <div class="bg-light rounded p-5 wow slideInUp" data-wow-delay="0.1s">
+            <h4 class="mb-4">Informations Supplémentaires</h4>
+            <p class="m-0">
+              Informations supplémentaires sur cette catégorie, telles que des restrictions d’utilisation,
+              des directives de gestion, ou des détails spécifiques aux produits associés.
+            </p>
+          </div>
         </div>
       </div>
     </div>

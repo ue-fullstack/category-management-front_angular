@@ -6,6 +6,7 @@ import {CreateCategoryComponent} from "./features/category/create-category/creat
 import {AboutComponent} from "./features/about/about/about.component";
 import {ContactComponent} from "./features/contact/contact/contact.component";
 import {error404Component} from "./features/error/404/404.component";
+import { ManagementComponent } from './features/category/management/management.component';
 
 export const routes: Routes = [
     {
@@ -19,14 +20,13 @@ export const routes: Routes = [
     },
     {
         path:'',
-        // component:LayoutComponent, //ceci pemettra d'afficher le navbar (menu)
         children: [
             {
                 path:'home',
                 component:HomepageComponent
             },
             {
-                path:'categorydetail',
+                path:'categorydetail/:id',
                 component:CategoryDetailComponent
             },
             {
@@ -34,9 +34,13 @@ export const routes: Routes = [
               component:CategoryListComponent
             },
             {
-              path:'createcategory',
-              component:CreateCategoryComponent
-            },
+                path: 'createcategory',
+                component: CreateCategoryComponent
+              },
+              {
+                path: 'createcategory/:id',
+                component: CreateCategoryComponent
+              },
             {
                 path:'about',
                 component:AboutComponent
@@ -44,6 +48,11 @@ export const routes: Routes = [
             {
                 path:'contact',
                 component:ContactComponent
+            },
+            
+            {
+                path:'management',
+                component:ManagementComponent
             },
             {
               path:'404',
