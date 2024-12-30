@@ -8,7 +8,7 @@ import { AlertService } from '../../../services/alert.service';
 @Component({
   selector: 'app-management',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [CommonModule],
   templateUrl: './management.component.html',
   styleUrls: ['./management.component.css']
 })
@@ -62,7 +62,7 @@ export class ManagementComponent implements OnInit {
       });
     }
   }
-  
+
 
   getCategoryNameById(id: number): string | null {
     const parentCategory = this.categoryList.find(category => category.id === id);

@@ -3,7 +3,7 @@
 import { Component, inject } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { Category } from '../../../shared/Category';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
 import { AlertService } from '../../../services/alert.service';
 
@@ -16,12 +16,13 @@ import { AlertService } from '../../../services/alert.service';
 })
 export class CategoryDetailComponent {
   categoryService = inject(CategoryService);
-  category: Category | null = null; 
+  category: Category | null = null;
 
+  route = inject(Router);
   activateRoute = inject(ActivatedRoute);
 
   constructor(private alertService: AlertService) {
-    
+
     this.activateRoute.params.subscribe((params: any) => {
       const id = +params['id'];
       if (id) {
@@ -43,5 +44,13 @@ export class CategoryDetailComponent {
       }
     });
   }
-  
+
+  trackByFn(index: number, item: Category) {
+    return item.id; // Utilisez l'ID de la catégorie pour le suivi
+  }
+
+  viewDetails(id: number){
+    this.route.navigate(['categorydetail', id]);
+  }
+
 }

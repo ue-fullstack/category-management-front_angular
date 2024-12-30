@@ -16,67 +16,99 @@ import { CommonModule, DatePipe } from '@angular/common';
 export class HomepageComponent implements OnInit{
   activateRoute = inject(ActivatedRoute);
   categoryService = inject(CategoryService);
-  categoryList: Category[] = [];
   route = inject(Router);
+  alertService = inject(AlertService); // Injection directe
 
-  searchForm: FormGroup;
-  categories: Category[] = [];
-  currentPage = 0;
-  pageSize = 10;
-  totalElements = 0;
-  hasSearched = false; // Nouvelle variable
+  searchForm: FormGroup; // Formulaire de recherche
+  categoryList: Category[] = []; // Toutes les catégories
+  categories: Category[] = []; // Catégories filtrées par recherche
+  currentPage = 0; // Page actuelle pour la pagination
+  pageSize = 10; // Nombre d'éléments par page
+  totalElements = 0; // Nombre total d'éléments disponibles
+  hasSearched = false; // Indique si une recherche a été effectuée
+  pages: number[] = [];
+  activeTab: number = 1;
 
-  constructor(private alertService: AlertService, private fb: FormBuilder){
-    this.getAllCategories();
-    
-
+  constructor(private fb: FormBuilder) {
+    // Initialisation du formulaire de recherche
     this.searchForm = this.fb.group({
       name: [''],
-      date: [''],
-      parentType: ['']
+      isRoot: [''], // Champs pour définir si c'est une catégorie racine
+      afterDate: [''], // Date minimale
+      beforeDate: [''], // Date maximale
+      sortBy: ['name'], // Tri par défaut
+      ascending: ['true'], // Ordre ascendant par défaut
     });
   }
 
-  
 
-  getAllCategories(){
-    this.categoryService.getAllCategories().subscribe((res: Page<Category>)=>{
-      this.categoryList = res._embedded.categoryList;
-     }, error=>{
-      this.alertService.showAlert("API error");
-     })
+
+  /** Récupère toutes les catégories depuis le service */
+  getAllCategories(): void {
+    this.categoryService.getAllCategories().subscribe(
+      (res: Page<Category>) => {
+        this.categoryList = res._embedded.categoryList;
+        this.totalElements = res.page.totalElements;
+      },
+      error => {
+        this.alertService.showAlert('Erreur lors de la récupération des catégories.');
+      }
+    );
   }
 
+  // getRootCategories(): void {
+  //   this.categoryService.getRootCategories(this.currentPage, this.pageSize).subscribe(
+  //     (res: Page<Category>) => {
+  //       this.categoryList = res._embedded.categoryList; // Liste des catégories
+  //       this.totalElements = res.page.totalElements; // Total des éléments
+  //     },
+  //     error => {
+  //       this.alertService.showAlert("Erreur lors de la récupération des catégories.");
+  //     }
+  //   );
+  // }
 
-  
 
   viewDetails(id: number){
     this.route.navigate(['categorydetail', id]);
   }
 
   ngOnInit(): void {
-    this.getAllCategories();
-    this.loadCategories();
+    this.getAllCategories()
   }
-  
 
-  loadCategories() {
+
+  /** Chargement des catégories en fonction des critères de recherche */
+  loadCategories(): void {
     const searchParams = {
-      name: this.searchForm.get('name')?.value,
-      date: this.searchForm.get('date')?.value ? new Date(this.searchForm.get('date')?.value).toISOString().split('T')[0] : null,
-      parentType: this.searchForm.get('parentType')?.value,
+      name: this.searchForm.get('name')?.value || null,
+      isRoot: this.searchForm.get('isRoot')?.value || null,
+      afterDate: this.searchForm.get('afterDate')?.value
+        ? new Date(this.searchForm.get('afterDate')?.value).toISOString()
+        : null,
+      beforeDate: this.searchForm.get('beforeDate')?.value
+        ? new Date(this.searchForm.get('beforeDate')?.value).toISOString()
+        : null,
+      sortBy: this.searchForm.get('sortBy')?.value || 'name',
+      ascending: this.searchForm.get('ascending')?.value === 'true', // Conversion en booléen
       page: this.currentPage.toString(),
-      size: this.pageSize.toString()
+      size: this.pageSize.toString(),
     };
 
     this.categoryService.searchCategories(searchParams).subscribe(
-      (page: Page<Category>) => {
-        this.categories = page._embedded.categoryList;
-        this.totalElements = page.page.totalElements;
+      (res: Page<Category>) => {
+        this.categories = res._embedded.categoryList;
+        this.totalElements = res.page.totalElements;
+        const totalPages = Math.ceil(this.totalElements / this.pageSize);
+        this.pages = Array.from({ length: totalPages }, (_, i) => i);
       },
-      //error => console.error('Error searching categories', error)
+      error => {
+        this.alertService.showAlert('Erreur lors de la recherche.');
+      }
     );
   }
+
+
 
   trackByFn(index: number, item: Category) {
     return item.id; // Utilisez l'ID de la catégorie pour le suivi
@@ -89,9 +121,15 @@ export class HomepageComponent implements OnInit{
   }
 
   onPageChange(page: number) {
+    if (page < 0 || page >= this.pages.length) {
+      return; // Empêche de sortir des limites
+    }
+
     this.currentPage = page;
-    this.loadCategories();
+    this.loadCategories(); // Recharge les données pour la nouvelle page
   }
+
+
 
 }
 

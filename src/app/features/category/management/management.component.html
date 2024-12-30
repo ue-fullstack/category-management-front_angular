@@ -63,7 +63,7 @@
       <td>{{ category.id }}</td>
       <td>
         <img
-          [src]="category.imageUrl || ''"
+          [src]="category.imageUrl==null ? category.imageUrl : 'assets/img/categorize.png'"
           alt="Category Image"
           width="50"
           height="50"
