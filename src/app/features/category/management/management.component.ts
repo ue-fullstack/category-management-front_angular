@@ -3,6 +3,7 @@ import { Category, Page } from '../../../shared/Category';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../services/category.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 import { AlertService } from '../../../services/alert.service';
 
 @Component({
@@ -49,18 +50,28 @@ export class ManagementComponent implements OnInit {
   }
 
   onDelete(id: number) {
-    const isDelete = confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');
-    if (isDelete) {
-      this.categoryService.deleteCategoryById(id).subscribe({
-        next: () => {
-          this.alertService.showAlert('Catégorie supprimée avec succès');
-          this.getAllCategories();
-        },
-        error: (error) => {
-          this.alertService.showError(error);
-        }
-      });
-    }
+    Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: 'Cette action supprimera définitivement la catégorie.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Oui, supprimer !',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.categoryService.deleteCategoryById(id).subscribe({
+          next: () => {
+            this.alertService.showSuccess('Catégorie supprimée avec succès');
+            this.getAllCategories();
+          },
+          error: (error) => {
+            this.alertService.showError('Erreur lors de la suppression : ' + error);
+          }
+        });
+      }
+    });
   }
 
 

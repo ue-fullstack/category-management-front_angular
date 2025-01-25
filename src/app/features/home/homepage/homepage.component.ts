@@ -51,22 +51,11 @@ export class HomepageComponent implements OnInit{
         this.totalElements = res.page.totalElements;
       },
       error => {
-        this.alertService.showAlert('Erreur lors de la récupération des catégories.');
+        this.alertService.showError('Erreur lors de la récupération des catégories.');
       }
     );
   }
 
-  // getRootCategories(): void {
-  //   this.categoryService.getRootCategories(this.currentPage, this.pageSize).subscribe(
-  //     (res: Page<Category>) => {
-  //       this.categoryList = res._embedded.categoryList; // Liste des catégories
-  //       this.totalElements = res.page.totalElements; // Total des éléments
-  //     },
-  //     error => {
-  //       this.alertService.showAlert("Erreur lors de la récupération des catégories.");
-  //     }
-  //   );
-  // }
 
 
   viewDetails(id: number){
@@ -103,7 +92,7 @@ export class HomepageComponent implements OnInit{
         this.pages = Array.from({ length: totalPages }, (_, i) => i);
       },
       error => {
-        this.alertService.showAlert('Erreur lors de la recherche.');
+        this.alertService.showError('Erreur lors de la recherche.');
       }
     );
   }

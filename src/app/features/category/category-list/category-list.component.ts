@@ -8,7 +8,7 @@ import { AlertService } from '../../../services/alert.service';
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [CommonModule],
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.css']
 })
@@ -46,7 +46,7 @@ export class CategoryListComponent implements OnInit {
     if (isDelete) {
       this.categoryService.deleteCategoryById(id).subscribe(
         (res: Category) => {
-          this.alertService.showAlert('Catégorie supprimée avec succès');
+          this.alertService.showSuccess('Catégorie supprimée avec succès');
           this.getAllCategories();
         },
         error => {

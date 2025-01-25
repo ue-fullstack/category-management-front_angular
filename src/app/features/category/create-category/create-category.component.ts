@@ -75,7 +75,7 @@ export class CreateCategoryComponent implements OnInit {
 
       this.updateAvailableChildren();
     }, error => {
-      this.alertService.showAlert(error);
+      this.alertService.showError(error);
     });
   }
 
@@ -179,7 +179,7 @@ export class CreateCategoryComponent implements OnInit {
           this.categoryService.updateCategory(+id, formData).subscribe(
             response => {
               console.log('Catégorie mise à jour avec succès', response);
-              this.alertService.showAlert('Categorie mise à jour avec succès');
+              this.alertService.showSuccess('Categorie mise à jour avec succès');
               this.router.navigate(['/management']); // Rafraîchir la page
             },
             error => this.alertService.showError(error)
@@ -189,7 +189,7 @@ export class CreateCategoryComponent implements OnInit {
         this.categoryService.createCategory(formData).subscribe(
           response => {
             console.log('Catégorie créée avec succès', response);
-            this.alertService.showAlert("Catégorie crée avec succès");
+            this.alertService.showSuccess("Catégorie crée avec succès");
             this.router.navigate(['/management']); // Rafraîchir la page
           },
           error => this.alertService.showError(error)
